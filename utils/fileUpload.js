@@ -4,9 +4,9 @@ const path = require("path");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "content")
+        cb(null, "content");
     },
-    fileName: (req, file, cb) => {
+    filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
@@ -24,7 +24,7 @@ const upload = multer({
         }
 
         cb("Only images supported");
-    }
+    },
 }).single("content");
 
 module.exports = upload;

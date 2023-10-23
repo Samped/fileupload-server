@@ -43,7 +43,7 @@ router.post("/signup", async (req, res) => {
       email,
       name,
       password: hashedPassword,
-      isSeller: false,
+      isSeller: isSeller || false,
     };
     //creates the user
     const createdUser = await User.create(user);
