@@ -15,7 +15,7 @@ const upload = multer({
     storage,
     limits: { fileSize: 100000 * 100 },
     fileFilter: (req, file, cb) => {
-        const fileTypes = /jpg|png|mp4|gif/;
+        const fileTypes = /jpg|png|mp4|mkv|flv|mov|wmv|gif/;
         const mimeType = fileTypes.test(file.mimeType);
         const extname = fileTypes.test(path.extname(file.originalname));
 
@@ -23,7 +23,7 @@ const upload = multer({
             return cb(null, true);
         }
 
-        cb("Only images supported");
+        cb("Give proper file formate to upload");
     },
 }).single("content");
 
