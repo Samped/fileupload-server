@@ -1,16 +1,4 @@
-##Image Upload Project README
-
-Table of Contents
-Introduction
-Project Overview
-Features
-Getting Started
-Prerequisites
-Installation
-Usage
-Configuration
-Contributing
-License
+Image Upload Project README
 
 1. Introduction
 Welcome to the Image Upload Project. This document will guide you through the setup and usage of this project. The project is designed to allow users to easily upload and manage images through a web interface.
