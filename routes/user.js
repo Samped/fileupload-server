@@ -100,6 +100,15 @@ router.post("/signin", async (req, res) => {
     };
 });
 
-
+router.get("/signout", (req, res) => {
+    try {
+        res.clearCookie('t');
+        return res.status(200).json({
+            message: "cookie delected"
+        });
+    } catch (e) {
+        return res.status(500).send(e);
+    }
+})
 
 module.exports = router;
