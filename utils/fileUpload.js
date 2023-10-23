@@ -25,4 +25,6 @@ const upload = multer({
 
         cb("Only images supported");
     }
-})
+}).single("content");
+
+module.exports = upload;
