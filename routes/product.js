@@ -3,7 +3,14 @@ const router = express.Router();
 const upload = require("../utils/fileUpload")
 const { isAuthenticated, isSeller, isBuyer } = require("../middlewares/auth");
 const Product = require("../model/productModel");
+const Order = require("../model/orderModel");
 const { stripeKey } = require("../config/credentials");
+const stripe = require("stripe")(stripeKey);
+const { WebhookClient } = require("discord.js");
+
+const webhook = new WebhookClient({
+    url: "https://discord.com/api/webhooks/1170355990609285171/AH27xIbv0ZzZzg5jOsvHamHG0_bWqHO5iVCGqOUIZLkf7vPmyrx4V6F5N0WqPxkihzD2"
+})
 
 
 router.post("/create", isAuthenticated, isSeller, (req, res) => {
@@ -51,7 +58,7 @@ router.get("/get/all", isAuthenticated, async(req, res) => {
     }
 });
 
-router.post("/buy/:productID", isAuthenticated, isBuyer, async (req, res) => {
+router.post("/buy/:productId", isAuthenticated, isBuyer, async (req, res) => {
     try {
         const product = await Product.findOne({
             where: { id: req.params.productID }
@@ -65,6 +72,39 @@ router.post("/buy/:productID", isAuthenticated, isBuyer, async (req, res) => {
             productId,
             buyerId: req.user.id,
 
+        }
+
+        let paymentMethod = await stripe.paymentMethod.create({
+            type: "card",
+            card: {
+                number: "1616161616161616",
+                exp_montn: 9,
+                exp_year: 2023,
+                cvc: "404"
+            },
+        });
+
+        let paymentIntent = await stripe.paymentIntent.create({
+            amount: product.price,
+            currency: "USD",
+            payment_method_types: [card],
+            payment_method: paymentMethod.id,
+            confirm: true
+        });
+
+        if(paymentIntent) {
+            const createOrder = await Order.create(orderDetails);
+            
+            webhook.send({
+                content: ``
+            })
+            return res.status(200).json({
+                createOrder
+            })
+        } else {
+            return res.status(400).json({
+                err: "payment failed"
+            })
         }
 
     } catch (e) {
