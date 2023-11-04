@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../utils/fileUpload")
-const { isAuthenticated, isSeller } = require("../middlewares/auth");
+const { isAuthenticated, isSeller, isBuyer } = require("../middlewares/auth");
 const Product = require("../model/productModel");
+const { stripeKey } = require("../config/credentials");
 
 
 router.post("/create", isAuthenticated, isSeller, (req, res) => {
@@ -49,5 +50,26 @@ router.get("/get/all", isAuthenticated, async(req, res) => {
         return res.status(500).json({ err: e});
     }
 });
+
+router.post("/buy/:productID", isAuthenticated, isBuyer, async (req, res) => {
+    try {
+        const product = await Product.findOne({
+            where: { id: req.params.productID }
+        })?.dataValues;
+
+        if(!product) {
+            return res.status(404).json({ err: "No product found"});
+        }
+
+        const orderDetails = {
+            productId,
+            buyerId: req.user.id,
+
+        }
+
+    } catch (e) {
+        return res.status(500).json({ err:e });
+    }
+})
 
 module.exports = router;
