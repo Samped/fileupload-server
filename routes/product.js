@@ -19,11 +19,14 @@ router.post("/create", isAuthenticated, isSeller, (req, res) => {
             console.log('coming in err',err);
             return res.status(500).send(err);
         }
+        console.log(req.body.name, req.body.price, req.file);
+        
         const { name, price } = req.body;
         if(!name || !price || !req.file) {
             return res.status(400).json({
                 err: "All fields should be selected - name, price, file"
-            })
+            }),
+            console.log(">>>>>>>", err)
         }
 
         if(Number.isNaN(price)) {
@@ -96,7 +99,9 @@ router.post("/buy/:productId", isAuthenticated, isBuyer, async (req, res) => {
             const createOrder = await Order.create(orderDetails);
             
             webhook.send({
-                content: ``
+                content: `Order Details\nOrderID:${createdOrder.id}\nProduct ID: ${createdOrder.productID}\nProduct Name: ${createdOrder.productName}\nProduct Price: ${createdOrder.productPrice}\nBuyer Name:${req.user.name}\nBuyer Email: ${createdOrder.buyerEmail}`,
+                username: "Order-keeper",
+                avatarURL: "https://i.imgur.com/AfFp7pu.png",
             })
             return res.status(200).json({
                 createOrder
