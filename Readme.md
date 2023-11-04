@@ -1,9 +1,10 @@
 Image Upload Project README
 
 1. Introduction
+
 Welcome to the Image Upload Project. This document will guide you through the setup and usage of this project. The project is designed to allow users to easily upload and manage images through a web interface.
 
-2. Project Overview
+3. Project Overview
 The Image Upload Project is a web application that allows users to:
 
 Upload images from their local devices.
