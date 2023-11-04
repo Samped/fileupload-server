@@ -9,7 +9,7 @@ const stripe = require("stripe")(stripeKey);
 const { WebhookClient } = require("discord.js");
 
 const webhook = new WebhookClient({
-    url: "https://discord.com/api/webhooks/1170355990609285171/AH27xIbv0ZzZzg5jOsvHamHG0_bWqHO5iVCGqOUIZLkf7vPmyrx4V6F5N0WqPxkihzD2"
+    url: "enter your discord webhook url here",
 })
 
 
@@ -20,7 +20,7 @@ router.post("/create", isAuthenticated, isSeller, (req, res) => {
             return res.status(500).send(err);
         }
         console.log(req.body.name, req.body.price, req.file);
-        
+
         const { name, price } = req.body;
         if(!name || !price || !req.file) {
             return res.status(400).json({
